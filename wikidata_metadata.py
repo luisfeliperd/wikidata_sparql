@@ -1,24 +1,13 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# # Script to map metadata to wikidata entities (instance of)
-
-# This script uses SPARQL Wikidata API endpoint, and searchs the values of a database (csv file) to determine to wich instance this values belongs. This provide 3 possible wikidata entities that represents each metadatas/columns of the inputed database.
-
-
-
+# Script to map metadata to wikidata entities (instance of)
 #Required Packages
 import requests
 import pandas as pd
 import time
 
-
 #API Endpoint
 api_url = 'https://query.wikidata.org/sparql'
-
 #Values to reconcile database
 tabela_df = pd.read_csv('planilha_teste.csv', encoding='utf-8')
-
 
 def reconcile_database(database):
     
@@ -52,10 +41,8 @@ def reconcile_database(database):
                                             'qid':item['sujeito']['value'],
                                             'qid_instancia':item['instancia']['value'], 
                                             'instance_label':item['instanciaLabel']['value'] },
-                                             ignore_index=True)
-                    
-            time.sleep(1)
-                    
+                                             ignore_index=True)  
+            time.sleep(1)               
     return result_df
 
 print(reconcile_database(tabela_df).to_csv("resultado.csv", encoding='utf-8'))
