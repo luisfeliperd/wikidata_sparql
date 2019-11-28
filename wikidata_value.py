@@ -16,14 +16,15 @@ api_url = 'https://query.wikidata.org/sparql'
 tabela_df = pd.read_csv('planilha_teste.csv', encoding='utf-8')
 
 value = 'Goiania'
+instance = 'Q1763214'
 
 query = """ SELECT DISTINCT ?sujeito ?sujeitoLabel ?sujeitoAltLabel WHERE {
                           
                           ?sujeito ?label "%s".
-                          ?sujeito wdt:P31 ?Instancia
+                          ?sujeito wdt:P31 wd:%s.
                           
                           SERVICE wikibase:label { bd:serviceParam wikibase:language "pt-br", "pt", "en". }
-                        }"""%(value)
+                        }"""%(value, instance)
 
 r = requests.get(api_url, params = {'format': 'json', 'query': query})
 data = r.json()
