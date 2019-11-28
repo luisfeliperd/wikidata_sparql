@@ -25,11 +25,15 @@ def reconcile_database(database):
             #SPARQL query. Returns subject QID, instance QID and instance label, searching the value for subjects
             #with matching labels.
             query = """ SELECT DISTINCT ?sujeito ?instancia_de_que ?instancia_de_queLabel WHERE {
-                          ?sujeito ?label "%s".
+                          { ?sujeito ?label "%s". }
+                          UNION
+                          { ?sujeito ?label "%s"@en. }
+                          UNION
+                          { ?sujeito ?label "%s"@pt-br. }
                           ?sujeito wdt:P31 ?instancia_de_que.
                           FILTER(?instancia_de_que NOT IN(wd:Q4167836, wd:Q4167410))
                           SERVICE wikibase:label { bd:serviceParam wikibase:language "pt-br", "pt", "en". }
-                        }""" %(value)
+                        }""" %(value, value, value)
             
             #Request the query to wikidata api and outputs a json.
             r = requests.get(api_url, params = {'format': 'json', 'query': query})
