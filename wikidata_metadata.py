@@ -17,7 +17,6 @@ api_url = 'https://query.wikidata.org/sparql'
 #Values to reconcile database
 tabela_df = pd.read_csv('base_mhn_teste.csv', encoding='utf-8')
 
-
 def reconcile_database(database):
     
     #Dataframe to store results
@@ -27,23 +26,19 @@ def reconcile_database(database):
     #For each metadata/column on values to reconcile database
     for column in database.columns:
         start_time = datetime.now()
-        
-        print("Verificando o metadado {}".format(column))
-        
         value_count = 0
         unique_list = []
+        print("Verificando o metadado {}".format(column))
         
         #Remove duplicated values
         for value in tabela_df[column].dropna():
             
             if "||" in value:
-                
                 for multivelue in value.split("||"):
                     
                     unique_list.append(value)
                     
             else:
-                
                 unique_list.append(value)
         
         #For each value of a column/metadata
@@ -68,11 +63,9 @@ def reconcile_database(database):
                 
                 #Verify if the JSON returns any data
                 if data == None:
-                    
                     continue
                 
                 else:
-    
                     #For each result inset data on wikiObj_df
                     for item in data['results']['bindings']:
                         
@@ -83,7 +76,6 @@ def reconcile_database(database):
                 time.sleep(3)
                 
                 value_count+=1
-                
         #Wait 10 seconds to avoid API block
         #time.sleep(10)
         
